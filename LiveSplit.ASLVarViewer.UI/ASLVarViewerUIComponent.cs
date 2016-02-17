@@ -28,6 +28,8 @@ namespace LiveSplit.ASLVarViewer.UI
             }
         }
 
+        public ASLVarViewerSettings Settings { get; set; }
+
         private ASLScript ScriptExecuting { get; set; }
 
         public IDictionary<string, Action> ContextMenuControls { get; protected set; }
@@ -37,12 +39,21 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public ASLVarViewerUIComponent(LiveSplitState state)
         {
-            this.ContextMenuControls = new Dictionary<String, Action>();
-            this.InternalComponent = new InfoTextComponent("Position", "0");
-
             _state = state;
+
+            this.Settings = new ASLVarViewerSettings(ASLEngine);
+            this.ContextMenuControls = new Dictionary<String, Action>();
+            this.Settings.ASLVarViewerLayoutChanged += Settings_ASLVarViewerLayoutChanged;
+
+            Settings_ASLVarViewerLayoutChanged(null, null);
+
             _state.OnStart += _state_OnStart;
             _state.OnReset += state_OnReset;
+        }
+
+        void Settings_ASLVarViewerLayoutChanged(object sender, EventArgs e)
+        {
+            this.InternalComponent = new InfoTextComponent(Settings.TextLabel, "0");
         }
 
         void _state_OnStart(object sender, EventArgs e)
@@ -60,7 +71,15 @@ namespace LiveSplit.ASLVarViewer.UI
             //string deaths = _deaths.ToString(CultureInfo.InvariantCulture);
             if (ScriptExecuting != null)
             {
-                string lives = ((IDictionary<string, object>)ScriptExecuting.State.Data)["PlayerPosition"].ToString();
+                string lives;
+                if (Settings.ValueLocation == ASLVarViewerSettings.ValueBucket.CurrentState)
+                {
+                    lives = ((IDictionary<string, object>)ScriptExecuting.State.Data)[Settings.ValueSource].ToString();
+                }
+                else
+                {
+                    lives = ((IDictionary<string, object>)ScriptExecuting.Vars)[Settings.ValueSource].ToString();
+                }
 
                 if (invalidator != null && this.InternalComponent.InformationValue != lives)
                 {
@@ -97,9 +116,16 @@ namespace LiveSplit.ASLVarViewer.UI
             ScriptExecuting = null;
         }
 
-        public XmlNode GetSettings(XmlDocument document) { return document.CreateElement("Settings"); }
-        public Control GetSettingsControl(LayoutMode mode) { return null; }
-        public void SetSettings(XmlNode settings) { }
+        public XmlNode GetSettings(XmlDocument document) { return Settings.GetSettings(document); }
+
+        public Control GetSettingsControl(LayoutMode mode) 
+        {
+            this.Settings.Mode = mode;
+            return this.Settings; 
+        }
+        
+        public void SetSettings(XmlNode settings) { Settings.SetSettings(settings); }
+
         public void RenameComparison(string oldName, string newName) { }
         public float MinimumWidth { get { return this.InternalComponent.MinimumWidth; } }
         public float MinimumHeight { get { return this.InternalComponent.MinimumHeight; } }

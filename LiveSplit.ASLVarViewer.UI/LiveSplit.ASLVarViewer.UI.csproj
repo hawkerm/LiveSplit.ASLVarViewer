@@ -50,9 +50,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ASLVarViewerSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ASLVarViewerSettings.Designer.cs">
+      <DependentUpon>ASLVarViewerSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="ASLVarViewerUIComponent.cs" />
     <Compile Include="ASLVarViewerUIFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ASLVarViewerSettings.resx">
+      <DependentUpon>ASLVarViewerSettings.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
