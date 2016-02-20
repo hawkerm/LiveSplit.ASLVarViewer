@@ -29,14 +29,14 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBoxLabel = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnTextColor = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.chkOverrideTextColor = new System.Windows.Forms.CheckBox();
             this.txtLabel = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBoxValue = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -54,9 +54,9 @@
             this.label11 = new System.Windows.Forms.Label();
             this.chkTwoRows = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupBoxLabel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.groupBoxValue.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -69,8 +69,8 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 29F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
-            this.tableLayoutPanel1.Controls.Add(this.groupBox2, 0, 3);
+            this.tableLayoutPanel1.Controls.Add(this.groupBoxLabel, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.groupBoxValue, 0, 3);
             this.tableLayoutPanel1.Controls.Add(this.cmbGradientType, 3, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnColor2, 2, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnColor1, 1, 0);
@@ -87,17 +87,17 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(462, 325);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // groupBox1
+            // groupBoxLabel
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.groupBox1, 4);
-            this.groupBox1.Controls.Add(this.tableLayoutPanel2);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(3, 61);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(456, 103);
-            this.groupBox1.TabIndex = 4;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Label";
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBoxLabel, 4);
+            this.groupBoxLabel.Controls.Add(this.tableLayoutPanel2);
+            this.groupBoxLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxLabel.Location = new System.Drawing.Point(3, 61);
+            this.groupBoxLabel.Name = "groupBoxLabel";
+            this.groupBoxLabel.Size = new System.Drawing.Size(456, 103);
+            this.groupBoxLabel.TabIndex = 4;
+            this.groupBoxLabel.TabStop = false;
+            this.groupBoxLabel.Text = "Label";
             // 
             // tableLayoutPanel2
             // 
@@ -176,17 +176,17 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "Color:";
             // 
-            // groupBox2
+            // groupBoxValue
             // 
-            this.tableLayoutPanel1.SetColumnSpan(this.groupBox2, 4);
-            this.groupBox2.Controls.Add(this.tableLayoutPanel3);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(3, 170);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(456, 152);
-            this.groupBox2.TabIndex = 5;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Value";
+            this.tableLayoutPanel1.SetColumnSpan(this.groupBoxValue, 4);
+            this.groupBoxValue.Controls.Add(this.tableLayoutPanel3);
+            this.groupBoxValue.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBoxValue.Location = new System.Drawing.Point(3, 170);
+            this.groupBoxValue.Name = "groupBoxValue";
+            this.groupBoxValue.Size = new System.Drawing.Size(456, 152);
+            this.groupBoxValue.TabIndex = 5;
+            this.groupBoxValue.TabStop = false;
+            this.groupBoxValue.Text = "Value";
             // 
             // tableLayoutPanel3
             // 
@@ -290,7 +290,6 @@
             // comboValue
             // 
             this.tableLayoutPanel3.SetColumnSpan(this.comboValue, 2);
-            this.comboValue.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboValue.FormattingEnabled = true;
             this.comboValue.Location = new System.Drawing.Point(156, 28);
             this.comboValue.Name = "comboValue";
@@ -404,10 +403,10 @@
             this.Load += new System.EventHandler(this.ASLVarViewerSettings_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
+            this.groupBoxLabel.ResumeLayout(false);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
+            this.groupBoxValue.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel3.PerformLayout();
             this.groupBox3.ResumeLayout(false);
@@ -420,12 +419,12 @@
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBoxLabel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Button btnTextColor;
         private System.Windows.Forms.CheckBox chkOverrideTextColor;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox groupBoxValue;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;

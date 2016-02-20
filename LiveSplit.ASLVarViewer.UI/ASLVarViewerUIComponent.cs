@@ -16,36 +16,25 @@ namespace LiveSplit.ASLVarViewer.UI
     {
         public string ComponentName
         {
-            get { return "ASL Var Viewer"; }
-        }
-
-        private LogicComponent ASLEngine
-        {
-            get
-            {
-                return _state.Layout.Components.FirstOrDefault(
-                    c => c.ComponentName == "Scriptable Auto Splitter") as LogicComponent;
-            }
+            get { return "ASL Var Viewer" + (string.IsNullOrWhiteSpace(Settings.TextLabel) ? "" : ": " + Settings.TextLabel); }
         }
 
         public ASLVarViewerSettings Settings { get; set; }
-
-        private ASLScript ScriptExecuting { get; set; }
 
         public IDictionary<string, Action> ContextMenuControls { get; protected set; }
         protected InfoTextComponent InternalComponent;
 
         private LiveSplitState _state;
+        private ASLEngineHook EngineHook { get; set; }
 
         public ASLVarViewerUIComponent(LiveSplitState state)
         {
             _state = state;
+            this.EngineHook = new ASLEngineHook(state);
 
-            this.Settings = new ASLVarViewerSettings(ASLEngine);
+            this.Settings = new ASLVarViewerSettings(this.EngineHook);
             this.ContextMenuControls = new Dictionary<String, Action>();
             this.Settings.ASLVarViewerLayoutChanged += Settings_ASLVarViewerLayoutChanged;
-
-            Settings_ASLVarViewerLayoutChanged(null, null);
 
             _state.OnStart += _state_OnStart;
             _state.OnReset += state_OnReset;
@@ -53,12 +42,18 @@ namespace LiveSplit.ASLVarViewer.UI
 
         void Settings_ASLVarViewerLayoutChanged(object sender, EventArgs e)
         {
+            if (this.InternalComponent != null)
+            {
+                this.InternalComponent.Dispose();
+                this.InternalComponent = null;
+            }
             this.InternalComponent = new InfoTextComponent(Settings.TextLabel, "0");
         }
 
         void _state_OnStart(object sender, EventArgs e)
         {
-            this.ScriptExecuting = (ASLScript)ASLEngine.GetType().GetProperty("Script").GetValue(ASLEngine, null);
+            this.EngineHook.AttemptLoad(); // Connect to ASL
+            Settings_ASLVarViewerLayoutChanged(null, null);
         }
 
         public void Dispose()
@@ -68,17 +63,16 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public void Update(IInvalidator invalidator, LiveSplitState state, float width, float height, LayoutMode mode)
         {
-            //string deaths = _deaths.ToString(CultureInfo.InvariantCulture);
-            if (ScriptExecuting != null)
+            if (this.EngineHook.IsLoaded)
             {
                 string lives;
                 if (Settings.ValueLocation == ASLVarViewerSettings.ValueBucket.CurrentState)
                 {
-                    lives = ((IDictionary<string, object>)ScriptExecuting.State.Data)[Settings.ValueSource].ToString();
+                    lives = this.EngineHook.GetStateValue(Settings.ValueSource);
                 }
                 else
                 {
-                    lives = ((IDictionary<string, object>)ScriptExecuting.Vars)[Settings.ValueSource].ToString();
+                    lives = this.EngineHook.GetVariableValue(Settings.ValueSource);
                 }
 
                 if (invalidator != null && this.InternalComponent.InformationValue != lives)
@@ -112,8 +106,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         void state_OnReset(object sender, TimerPhase t)
         {
-            //_deaths = 0;
-            ScriptExecuting = null;
+            this.EngineHook.Unload();
         }
 
         public XmlNode GetSettings(XmlDocument document) { return Settings.GetSettings(document); }

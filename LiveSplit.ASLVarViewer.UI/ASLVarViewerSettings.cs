@@ -41,14 +41,13 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public LayoutMode Mode { get; set; }
 
-        private LogicComponent ASLEngine { get; set; }
-        private ASLScript ScriptExecuting { get; set; }
+        private ASLEngineHook EngineHook { get; set; }
 
         public event EventHandler ASLVarViewerLayoutChanged;
 
-        public ASLVarViewerSettings(LogicComponent ASLEngine)
+        public ASLVarViewerSettings(ASLEngineHook ASLEngine)
         {
-            this.ASLEngine = ASLEngine;
+            this.EngineHook = ASLEngine;
 
             InitializeComponent();
 
@@ -67,7 +66,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
             chkOverrideTimeColor.DataBindings.Add("Checked", this, "OverrideValueColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnTimeColor.DataBindings.Add("BackColor", this, "ValueColor", false, DataSourceUpdateMode.OnPropertyChanged);
-            comboValue.DataBindings.Add("SelectedItem", this, "ValueSource", false, DataSourceUpdateMode.OnPropertyChanged);
+            comboValue.DataBindings.Add("Text", this, "ValueSource", false, DataSourceUpdateMode.OnPropertyChanged);
 
             btnColor1.DataBindings.Add("BackColor", this, "BackgroundColor", false, DataSourceUpdateMode.OnPropertyChanged);
             btnColor2.DataBindings.Add("BackColor", this, "BackgroundColor2", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -86,8 +85,16 @@ namespace LiveSplit.ASLVarViewer.UI
 
         void ASLVarViewerSettings_Load(object sender, EventArgs e)
         {
-            this.ScriptExecuting = (ASLScript)ASLEngine.GetType().GetProperty("Script").GetValue(ASLEngine, null);
+            if (!this.EngineHook.AttemptLoad())
+            {
+                MessageBox.Show("Cannot connect to AutoSplit Engine.\n\nPlease add a 'Scriptable Auto Splitter' component first with an Active Script before configuring this component.", "AutoSplit Connection Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
+                this.Enabled = false;
+                return;
+            }
+
+            this.radioState.Checked = (ValueLocation == ValueBucket.CurrentState);
+            this.radioVariables.Checked = (ValueLocation == ValueBucket.Variables);
             this.UpdateLocation();
 
             chkOverrideTextColor_CheckedChanged(null, null);
@@ -130,6 +137,11 @@ namespace LiveSplit.ASLVarViewer.UI
             BackgroundColor2 = SettingsHelper.ParseColor(element["BackgroundColor2"]);
             GradientString = SettingsHelper.ParseString(element["BackgroundGradient"]);
             Display2Rows = SettingsHelper.ParseBool(element["Display2Rows"], false);
+
+            if (ASLVarViewerLayoutChanged != null)
+            {
+                ASLVarViewerLayoutChanged(this, null);
+            }
         }
 
         public XmlNode GetSettings(XmlDocument document)
@@ -146,7 +158,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         private int CreateSettingsNode(XmlDocument document, XmlElement parent)
         {
-            return SettingsHelper.CreateSetting(document, parent, "Version", "1.4") ^
+            return SettingsHelper.CreateSetting(document, parent, "Version", "1.0") ^
             SettingsHelper.CreateSetting(document, parent, "TextLabel", TextLabel) ^
             SettingsHelper.CreateSetting(document, parent, "TextColor", TextColor) ^
             SettingsHelper.CreateSetting(document, parent, "OverrideTextColor", OverrideTextColor) ^
@@ -183,23 +195,41 @@ namespace LiveSplit.ASLVarViewer.UI
                 ValueLocation = ValueBucket.Variables;
             }
 
-            if (ScriptExecuting != null)
+            if (this.EngineHook.IsLoaded)
             {
                 comboValue.Items.Clear();
                 if (ValueLocation == ValueBucket.CurrentState)
                 {
-                    comboValue.Items.AddRange(((IDictionary<string, object>)ScriptExecuting.State.Data).Keys.ToArray());
+                    comboValue.Items.AddRange(this.EngineHook.GetStateKeys());
                 }
                 else
                 {
-                    comboValue.Items.AddRange(((IDictionary<string, object>)ScriptExecuting.Vars).Keys.ToArray());
+                    comboValue.Items.AddRange(this.EngineHook.GetVariableKeys());
+                }
+
+                if (comboValue.Items.Count == 0)
+                {
+                    this.radioState.Enabled = false;
+                    this.radioVariables.Enabled = false;
+                    this.comboValue.Enabled = false;
+                    this.groupBoxValue.Text = "Value [Please Load ASL Script or Start Game]";
+                }
+                else
+                {
+                    this.groupBoxValue.Text = "Value";
+                    this.radioState.Enabled = true;
+                    this.radioVariables.Enabled = true;
+                    this.comboValue.Enabled = true;
                 }
             }
         }
 
         private void txtLabel_Validated(object sender, EventArgs e)
         {
-            ASLVarViewerLayoutChanged(this, null);
+            if (ASLVarViewerLayoutChanged != null)
+            {
+                ASLVarViewerLayoutChanged(this, null);
+            }
         }
     }
 }
