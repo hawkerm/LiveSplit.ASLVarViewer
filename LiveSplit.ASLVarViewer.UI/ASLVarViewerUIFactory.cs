@@ -37,7 +37,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public string UpdateURL
         {
-            get { return ""; } // http://fatalis.pw/livesplit/update/
+            get { return ""; }
         }
 
         public Version Version
@@ -47,7 +47,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public string XMLURL
         {
-            get { return ""; } // this.UpdateURL + "Components/update.LiveSplit.HaloSplit.UI.xml"
+            get { return ""; }
         }
     }
 }
