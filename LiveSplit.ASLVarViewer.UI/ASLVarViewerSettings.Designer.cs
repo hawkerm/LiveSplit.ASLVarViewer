@@ -391,6 +391,7 @@
             this.chkTwoRows.TabIndex = 3;
             this.chkTwoRows.Text = "Display 2 Rows";
             this.chkTwoRows.UseVisualStyleBackColor = true;
+            this.chkTwoRows.CheckedChanged += new System.EventHandler(this.chkTwoRows_CheckedChanged);
             // 
             // ASLVarViewerSettings
             // 

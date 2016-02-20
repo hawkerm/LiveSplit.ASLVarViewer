@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Xml;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace LiveSplit.ASLVarViewer.UI
 {
@@ -78,30 +79,58 @@ namespace LiveSplit.ASLVarViewer.UI
                 if (invalidator != null && this.InternalComponent.InformationValue != lives)
                 {
                     this.InternalComponent.InformationValue = lives;
-                    invalidator.Invalidate(0f, 0f, width, height);
+                    InternalComponent.Update(invalidator, state, width, height, mode);
                 }
             }
         }
 
-        public void DrawVertical(Graphics g, LiveSplitState state, float width, Region region)
+        public void DrawVertical(Graphics g, LiveSplitState state, float width, Region clipRegion)
         {
-            this.PrepareDraw(state);
-            this.InternalComponent.DrawVertical(g, state, width, region);
-        }
+            DrawBackground(g, state, width, VerticalHeight);
 
-        public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region region)
-        {
-            this.PrepareDraw(state);
-            this.InternalComponent.DrawHorizontal(g, state, height, region);
-        }
+            InternalComponent.DisplayTwoRows = Settings.Display2Rows;
 
-        void PrepareDraw(LiveSplitState state)
-        {
-            this.InternalComponent.NameLabel.ForeColor = state.LayoutSettings.TextColor;
-            this.InternalComponent.ValueLabel.ForeColor = state.LayoutSettings.TextColor;
-            this.InternalComponent.NameLabel.HasShadow
-                = this.InternalComponent.ValueLabel.HasShadow
+            InternalComponent.NameLabel.HasShadow
+                = InternalComponent.ValueLabel.HasShadow
                 = state.LayoutSettings.DropShadows;
+
+            InternalComponent.NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.TextColor : state.LayoutSettings.TextColor;
+            InternalComponent.ValueLabel.ForeColor = Settings.OverrideValueColor ? Settings.ValueColor : state.LayoutSettings.TextColor;
+
+            InternalComponent.DrawVertical(g, state, width, clipRegion);
+        }
+
+        public void DrawHorizontal(Graphics g, LiveSplitState state, float height, Region clipRegion)
+        {
+            DrawBackground(g, state, HorizontalWidth, height);
+
+            InternalComponent.NameLabel.HasShadow
+                = InternalComponent.ValueLabel.HasShadow
+                = state.LayoutSettings.DropShadows;
+
+            InternalComponent.NameLabel.ForeColor = Settings.OverrideTextColor ? Settings.TextColor : state.LayoutSettings.TextColor;
+            InternalComponent.ValueLabel.ForeColor = Settings.OverrideValueColor ? Settings.ValueColor : state.LayoutSettings.TextColor;
+
+            InternalComponent.DrawHorizontal(g, state, height, clipRegion);
+        }
+
+        private void DrawBackground(Graphics g, LiveSplitState state, float width, float height)
+        {
+            if (Settings.BackgroundColor.ToArgb() != Color.Transparent.ToArgb()
+                || Settings.BackgroundGradient != GradientType.Plain
+                && Settings.BackgroundColor2.ToArgb() != Color.Transparent.ToArgb())
+            {
+                var gradientBrush = new LinearGradientBrush(
+                            new PointF(0, 0),
+                            Settings.BackgroundGradient == GradientType.Horizontal
+                            ? new PointF(width, 0)
+                            : new PointF(0, height),
+                            Settings.BackgroundColor,
+                            Settings.BackgroundGradient == GradientType.Plain
+                            ? Settings.BackgroundColor
+                            : Settings.BackgroundColor2);
+                g.FillRectangle(gradientBrush, 0, 0, width, height);
+            }
         }
 
         void state_OnReset(object sender, TimerPhase t)

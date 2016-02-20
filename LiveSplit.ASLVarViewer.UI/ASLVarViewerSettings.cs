@@ -231,5 +231,13 @@ namespace LiveSplit.ASLVarViewer.UI
                 ASLVarViewerLayoutChanged(this, null);
             }
         }
+
+        private void chkTwoRows_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ASLVarViewerLayoutChanged != null)
+            {
+                ASLVarViewerLayoutChanged(this, null);
+            }
+        }
     }
 }
