@@ -402,6 +402,7 @@
             this.Padding = new System.Windows.Forms.Padding(7);
             this.Size = new System.Drawing.Size(476, 339);
             this.Load += new System.EventHandler(this.ASLVarViewerSettings_Load);
+            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.ASLVarViewerSettings_Layout);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.groupBoxLabel.ResumeLayout(false);

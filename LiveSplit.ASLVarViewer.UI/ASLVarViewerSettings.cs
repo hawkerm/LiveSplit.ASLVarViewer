@@ -239,5 +239,14 @@ namespace LiveSplit.ASLVarViewer.UI
                 ASLVarViewerLayoutChanged(this, null);
             }
         }
+
+        private void ASLVarViewerSettings_Layout(object sender, LayoutEventArgs e)
+        {
+            // If we go to show this component and we're not enabled, we should try and load again.
+            if (!this.Enabled && this.EngineHook.AttemptLoad())
+            {
+                this.Enabled = true;
+            }
+        }
     }
 }

@@ -37,6 +37,8 @@ namespace LiveSplit.ASLVarViewer.UI
             this.ContextMenuControls = new Dictionary<String, Action>();
             this.Settings.ASLVarViewerLayoutChanged += Settings_ASLVarViewerLayoutChanged;
 
+            this.Settings_ASLVarViewerLayoutChanged(this, null);
+
             _state.OnStart += _state_OnStart;
             _state.OnReset += state_OnReset;
         }
@@ -46,7 +48,6 @@ namespace LiveSplit.ASLVarViewer.UI
             if (this.InternalComponent != null)
             {
                 this.InternalComponent.Dispose();
-                this.InternalComponent = null;
             }
             this.InternalComponent = new InfoTextComponent(Settings.TextLabel, "0");
         }

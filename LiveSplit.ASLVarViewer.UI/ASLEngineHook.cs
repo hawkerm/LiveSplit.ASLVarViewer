@@ -84,7 +84,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public string GetStateValue(string key)
         {
-            if (ASLScript != null && ASLScript.State != null && 
+            if (ASLScript != null && ASLScript.State != null && key != null &&
                 ((IDictionary<string, object>)ASLScript.State.Data).ContainsKey(key))
             {
                 return "" + ((IDictionary<string, object>)ASLScript.State.Data)[key];
@@ -95,7 +95,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public string GetVariableValue(string key)
         {
-            if (ASLScript != null && 
+            if (ASLScript != null && key != null &&
                 ((IDictionary<string, object>)ASLScript.Vars).ContainsKey(key))
             {
                 return "" + ((IDictionary<string, object>)ASLScript.Vars)[key];
