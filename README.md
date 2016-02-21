@@ -6,6 +6,8 @@ Can read any *current/vars* variable within the loaded/running ASL script.  Conf
 
 Contains Standard Component Background/Foreground Color Settings.
 
+[[https://github.com/hawkerm/LiveSplit.ASLVarViewer/blob/master/screenshot.jpg|alt=octocat]]
+
 ## Instructions
 
 Built for [LiveSplit v1.6.8](https://github.com/LiveSplit/LiveSplit/releases/tag/1.6.8)
