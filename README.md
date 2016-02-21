@@ -1,14 +1,9 @@
 # ASL Var Viewer
 
-Generic ASL Variable Viewer.
+A [LiveSplit](http://livesplit.github.io/) Information Component for displaying State/Variables from ASL Script based [AutoSplitters](https://github.com/LiveSplit/LiveSplit/blob/master/Documentation/Auto-Splitters.md).
 
-Can read any current/vars variable within the loaded/running ASL script.  Configure in settings with the **Exact** state/variable name from the script running.
+Can read any *current/vars* variable within the loaded/running ASL script.  Configurable in standard Layout UI settings via drop-down when an ASL script is running.
 
-TODO:
+Contains Standard Component Background/Foreground Color Settings.
 
-* Settings Page
-  * Better Handling of ASLEngine Connection
-  * Hook in Extra Color Settings that are provided into Component
-  * Have coloring based on certain parameters?
-  * Preview of Vars before Start?
   
