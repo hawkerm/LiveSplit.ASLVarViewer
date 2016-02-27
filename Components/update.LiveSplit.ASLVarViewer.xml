@@ -1,0 +1,28 @@
+<updates>
+  <update version="1.1">
+    <files>
+      <file path="Components/LiveSplit.ASLVarViewer.UI.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>Add Support for Downloaded ASL Files via the Splits Editor.</change>
+      <change>Add Support for Component Updating.</change>
+    </changelog>
+  </update>
+  <update version="1.0.1">
+    <files>
+      <file path="Components/LiveSplit.ASLVarViewer.UI.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>Fix issue with component initialization.</change>
+    </changelog>
+  </update>
+  <update version="1.0">
+    <files>
+      <file path="Components/LiveSplit.ASLVarViewer.UI.dll" status="changed"/>
+    </files>
+    <changelog>
+      <change>Initial Release of ASLVarViewer.</change>
+      <change>Configurable component to display any values from an ASL script.</change>
+    </changelog>
+  </update>
+</updates>

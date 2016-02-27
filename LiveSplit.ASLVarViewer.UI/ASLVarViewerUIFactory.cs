@@ -37,7 +37,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public string UpdateURL
         {
-            get { return ""; }
+            get { return "https://raw.githubusercontent.com/hawkerm/LiveSplit.ASLVarViewer/master"; }
         }
 
         public Version Version
@@ -47,7 +47,7 @@ namespace LiveSplit.ASLVarViewer.UI
 
         public string XMLURL
         {
-            get { return ""; }
+            get { return this.UpdateURL + "Components/update.LiveSplit.ASLVarViewer.xml"; }
         }
     }
 }
