@@ -30,7 +30,18 @@ namespace LiveSplit.ASLVarViewer.UI
             {
                 if (aslEngine == null)
                 {
-                    aslEngine = State.Layout.Components.FirstOrDefault(c => c.ComponentName == "Scriptable Auto Splitter") as LogicComponent;
+                    // If we have an active auto-downloaded autosplitter, use that, otherwise look for a layout component
+                    if (State.Run != null &&
+                        State.Run.AutoSplitter != null &&
+                        State.Run.AutoSplitter.Type == AutoSplitterType.Script &&
+                        State.Run.IsAutoSplitterActive())
+                    {
+                        aslEngine = State.Run.AutoSplitter.Component as LogicComponent; // TODO: For 1.7 compatible only release, case to ASLComponent
+                    }
+                    else
+                    {
+                        aslEngine = State.Layout.Components.FirstOrDefault(c => c.ComponentName == "Scriptable Auto Splitter") as LogicComponent;
+                    }
                 }
 
                 return aslEngine;
